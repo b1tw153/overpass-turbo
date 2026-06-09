@@ -61,6 +61,17 @@
             </button>
             <button
               class="t button"
+              data-ide-handler="click:onImportClick"
+              title=""
+              data-t="[title]nav.import_tt"
+            >
+              <span class="icon">
+                <span class="fas fa-file-import"></span>
+              </span>
+              <span class="t" data-t="nav.import">Import</span>
+            </button>
+            <button
+              class="t button"
               accesskey="3"
               data-ide-handler="click:onExportClick"
               title=""
@@ -729,6 +740,61 @@
             <div class="level-right">
               <div class="level-item">
                 <button class="button" data-ide-handler="click:onLoadClose">
+                  <span class="t" data-t="dialog.cancel">Cancel</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Import -->
+    <div class="modal dialog" id="import-dialog">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">
+            <span class="icon">
+              <span class="fas fa-file-import"></span>
+            </span>
+            <span class="t" data-t="[html]import.title"></span>
+          </p>
+          <button
+            class="delete"
+            aria-label="close"
+            data-ide-handler="click:onImportClose"
+          ></button>
+        </header>
+        <section class="modal-card-body">
+          <div class="panel">
+            <p class="t panel-heading" data-t="import.section.geojson"></p>
+            <div class="panel-block">
+              <p class="t" data-t="[html]import.instructions"></p>
+            </div>
+            <div class="panel-block">
+              <div id="import-drop-zone" class="box has-text-centered">
+                <span class="t" data-t="import.drop_zone"></span>
+              </div>
+            </div>
+            <div class="panel-block">
+              <button class="button" id="import-choose-file">
+                <span class="t" data-t="import.choose_file"></span>
+              </button>
+              <input
+                type="file"
+                id="import-file-input"
+                accept=".geojson,.json"
+                hidden
+              />
+            </div>
+          </div>
+        </section>
+        <footer class="modal-card-foot">
+          <div class="level">
+            <div class="level-right">
+              <div class="level-item">
+                <button class="button" data-ide-handler="click:onImportClose">
                   <span class="t" data-t="dialog.cancel">Cancel</span>
                 </button>
               </div>

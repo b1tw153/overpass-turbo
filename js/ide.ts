@@ -151,6 +151,7 @@ class IDE {
   private scaleControl = null;
   private queryParser = new Query();
   private run_query_on_startup = false;
+  private importedPoly: string | null = null;
   // == public members ==
   codeEditor = null;
   dataViewer = null;
@@ -1589,6 +1590,39 @@ class IDE {
   }
   onShareClose() {
     $("#share-dialog").removeClass("is-active");
+  }
+  onImportClick() {
+    $("#import-dialog").addClass("is-active");
+    $("#import-drop-zone")
+      .off("dragover drop")
+      .on("dragover", (e) => {
+        e.preventDefault();
+      })
+      .on("drop", (e) => {
+        e.preventDefault();
+        const file = e.originalEvent.dataTransfer.files[0];
+        if (file) this.handleImportFile(file);
+      });
+    $("#import-choose-file")
+      .off("click")
+      .on("click", () => {
+        $("#import-file-input").trigger("click");
+      });
+    $("#import-file-input")
+      .off("change")
+      .on("change", (e) => {
+        const input = e.target as HTMLInputElement;
+        const file = input.files?.[0];
+        // reset so the same file can be selected again
+        input.value = "";
+        if (file) this.handleImportFile(file);
+      });
+  }
+  onImportClose() {
+    $("#import-dialog").removeClass("is-active");
+  }
+  private handleImportFile(_file: File) {
+    // TODO: parse GeoJSON and store poly string in this.importedPoly
   }
   async onExportClick() {
     // prepare export dialog

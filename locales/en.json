@@ -4,6 +4,8 @@
   "nav.rerender_tt": "parse the MapCSS and rerender the map",
   "nav.share": "Share",
   "nav.share_tt": "get a permalink for this query",
+  "nav.import": "Import",
+  "nav.import_tt": "import a GeoJSON polygon",
   "nav.export": "Export",
   "nav.export_tt": "various export tools",
   "nav.save": "Save",
@@ -140,6 +142,12 @@
   "export.image.alt": "the exported map",
   "export.image.download": "Download",
   "export.image.attribution_missing": "Make sure to include proper attributions when distributing this image!",
+
+  "import.title": "Import",
+  "import.section.geojson": "GeoJSON Polygon",
+  "import.instructions": "Drop a GeoJSON file below or click the button to select one. The polygon will be available as <code>{{import}}</code> in your query.",
+  "import.drop_zone": "Drop GeoJSON file here",
+  "import.choose_file": "Choose file…",
 
   "share.title": "Share",
   "share.header": "Permalink",
