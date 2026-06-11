@@ -166,6 +166,7 @@ export default function shortcuts(): Record<string, Shortcut> {
         : (instr, callback) =>
             geocodeArea(instr, (result) => callback(`${result};`)),
     nominatimBbox: geocodeBbox,
-    nominatimCoords: geocodeCoords
+    nominatimCoords: geocodeCoords,
+    import: ide.importedPoly
   };
 }

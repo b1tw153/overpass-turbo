@@ -178,6 +178,9 @@ class IDE {
   private run_query_on_startup = false;
   private importedPolygon: ImportedPolygon | null = null;
   private pendingImport: ImportedPolygon | null = null;
+  get importedPoly(): string {
+    return this.importedPolygon?.poly ?? "";
+  }
   // == public members ==
   codeEditor = null;
   dataViewer = null;
