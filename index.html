@@ -774,7 +774,11 @@
             </div>
             <div class="panel-block">
               <div id="import-drop-zone" class="box has-text-centered">
-                <span class="t" data-t="import.drop_zone"></span>
+                <span
+                  class="t"
+                  id="import-drop-zone-status"
+                  data-t="import.drop_zone"
+                ></span>
               </div>
             </div>
             <div class="panel-block">
@@ -794,6 +798,17 @@
           <div class="level">
             <div class="level-right">
               <div class="level-item">
+                <button
+                  class="button is-success"
+                  id="import-submit"
+                  data-ide-handler="click:onImportSubmit"
+                  disabled
+                >
+                  <span class="icon">
+                    <span class="fas fa-file-import"></span>
+                  </span>
+                  <span class="t" data-t="import.submit"></span>
+                </button>
                 <button class="button" data-ide-handler="click:onImportClose">
                   <span class="t" data-t="dialog.cancel">Cancel</span>
                 </button>

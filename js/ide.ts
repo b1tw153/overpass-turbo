@@ -145,13 +145,39 @@ function showDialog(title, content, buttons) {
   element.appendTo("body");
 }
 
+/** Returns the first Polygon geometry in a parsed GeoJSON object, or null. */
+function findPolygonGeometry(geojson): GeoJSON.Polygon | null {
+  if (!geojson || typeof geojson !== "object") return null;
+  switch (geojson.type) {
+    case "Polygon":
+      return geojson;
+    case "Feature":
+      return findPolygonGeometry(geojson.geometry);
+    case "FeatureCollection":
+      for (const feature of geojson.features ?? []) {
+        const polygon = findPolygonGeometry(feature);
+        if (polygon) return polygon;
+      }
+      return null;
+    default:
+      return null;
+  }
+}
+
+interface ImportedPolygon {
+  poly: string;
+  filename: string;
+  pointCount: number;
+}
+
 class IDE {
   // == private members ==
   private attribControl = null;
   private scaleControl = null;
   private queryParser = new Query();
   private run_query_on_startup = false;
-  private importedPoly: string | null = null;
+  private importedPolygon: ImportedPolygon | null = null;
+  private pendingImport: ImportedPolygon | null = null;
   // == public members ==
   codeEditor = null;
   dataViewer = null;
@@ -1592,14 +1618,21 @@ class IDE {
     $("#share-dialog").removeClass("is-active");
   }
   onImportClick() {
+    this.pendingImport = null;
+    this.updateImportDialog();
     $("#import-dialog").addClass("is-active");
     $("#import-drop-zone")
-      .off("dragover drop")
+      .off("dragover dragleave drop")
       .on("dragover", (e) => {
         e.preventDefault();
+        $(e.currentTarget).addClass("drag-over");
+      })
+      .on("dragleave", (e) => {
+        $(e.currentTarget).removeClass("drag-over");
       })
       .on("drop", (e) => {
         e.preventDefault();
+        $(e.currentTarget).removeClass("drag-over");
         const file = e.originalEvent.dataTransfer.files[0];
         if (file) this.handleImportFile(file);
       });
@@ -1618,11 +1651,61 @@ class IDE {
         if (file) this.handleImportFile(file);
       });
   }
+  onImportSubmit() {
+    if (this.pendingImport) {
+      this.importedPolygon = this.pendingImport;
+    }
+    this.onImportClose();
+  }
   onImportClose() {
+    this.pendingImport = null;
     $("#import-dialog").removeClass("is-active");
   }
-  private handleImportFile(_file: File) {
-    // TODO: parse GeoJSON and store poly string in this.importedPoly
+  private handleImportFile(file: File) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const importError = (key: string) => {
+        this.pendingImport = null;
+        this.updateImportDialog(i18n.t(key).replace("{{filename}}", file.name));
+      };
+      let geojson;
+      try {
+        geojson = JSON.parse(reader.result as string);
+      } catch {
+        importError("import.error.invalid_json");
+        return;
+      }
+      const ring = findPolygonGeometry(geojson)?.coordinates[0];
+      if (!ring || ring.length < 3) {
+        importError("import.error.no_polygon");
+        return;
+      }
+      this.pendingImport = {
+        poly: ring.map(([lng, lat]) => `${lat} ${lng}`).join(" "),
+        filename: file.name,
+        pointCount: ring.length
+      };
+      this.updateImportDialog();
+    };
+    reader.readAsText(file);
+  }
+  private updateImportDialog(error?: string) {
+    const status = $("#import-drop-zone-status");
+    status.toggleClass("has-text-danger", error !== undefined);
+    if (error !== undefined) {
+      status.text(error);
+    } else {
+      const loaded = this.pendingImport ?? this.importedPolygon;
+      status.text(
+        loaded
+          ? i18n
+              .t("import.status_loaded")
+              .replace("{{filename}}", loaded.filename)
+              .replace("{{count}}", String(loaded.pointCount))
+          : i18n.t("import.drop_zone")
+      );
+    }
+    $("#import-submit").prop("disabled", !this.pendingImport);
   }
   async onExportClick() {
     // prepare export dialog

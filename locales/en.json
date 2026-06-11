@@ -148,6 +148,10 @@
   "import.instructions": "Drop a GeoJSON file below or click the button to select one. The polygon will be available as <code>{{import}}</code> in your query.",
   "import.drop_zone": "Drop GeoJSON file here",
   "import.choose_file": "Choose file…",
+  "import.submit": "Import",
+  "import.status_loaded": "{{filename}} — {{count}} points",
+  "import.error.invalid_json": "{{filename}} — not valid GeoJSON",
+  "import.error.no_polygon": "{{filename}} — no polygon found",
 
   "share.title": "Share",
   "share.header": "Permalink",

@@ -358,6 +358,16 @@ body .ui-tooltip {
   flex-grow: 2;
 }
 
+#import-drop-zone {
+  width: 100%;
+  border: 2px dashed #ccc;
+  box-shadow: none;
+}
+#import-drop-zone.drag-over {
+  border-color: #3273dc;
+  background-color: #eef3fc;
+}
+
 kbd {
   display: inline-block;
   margin: 0 0.1em;
