@@ -1,7 +1,21 @@
-# overpass turbo
+# overpass turbo - with polygon imports
 
 - https://overpass-turbo.eu/ – stable version
 - https://tyrasd.github.io/overpass-turbo/ – latest version
+- https://b1tw153.github.io/polygon-import/ - this version with polygon imports
+
+## Polygon Imports
+
+This branch of Overpass Turbo allows users to query OpenStreetMap data using imported area polygons. Here's how to use it:
+
+1. Download a school district, voting district, Zip Code boundary, or other boundary from another data source.
+2. Convert the boundary to a GeoJSON file containing a single polygon.\*
+3. Open the web page for this branch of Overpass Turbo.
+4. Select "Import" and choose the GeoJSON file.
+5. Write a query using `(poly:"{{import}}")` to filter results to within the imported polygon.
+6. Run the query and get the results!
+
+## Overview
 
 This is a GUI for testing and developing queries for the [Overpass-API](https://www.overpass-api.de/). It can also used for simple analysis of OSM data.
 
