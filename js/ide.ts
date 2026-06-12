@@ -151,6 +151,16 @@ function findPolygonGeometry(geojson): GeoJSON.Polygon | null {
   switch (geojson.type) {
     case "Polygon":
       return geojson;
+    case "LineString": {
+      // A closed OSM way exported from JOSM has a repeated start/end coordinate
+      const coords: GeoJSON.Position[] = geojson.coordinates;
+      const first = coords[0];
+      const last = coords[coords.length - 1];
+      if (coords.length >= 4 && first[0] === last[0] && first[1] === last[1]) {
+        return {type: "Polygon", coordinates: [coords]};
+      }
+      return null;
+    }
     case "Feature":
       return findPolygonGeometry(geojson.geometry);
     case "FeatureCollection":
