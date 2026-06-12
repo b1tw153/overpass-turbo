@@ -55,7 +55,8 @@ export default defineConfig(() => ({
     inject({
       exclude: /(css|pegjs)$/,
       $: "jquery",
-      jQuery: "jquery"
+      jQuery: "jquery",
+      L: "leaflet"
     }),
     peggyPlugin()
   ],
