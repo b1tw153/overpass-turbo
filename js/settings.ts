@@ -122,7 +122,7 @@ class Settings {
 const examples = {
   "Drinking Water": {
     overpass:
-      "/*\nThis is an example Overpass query.\nTry it out by pressing the Run button above!\nYou can find more examples with the Load tool.\n*/\nnode\n  [amenity=drinking_water]\n  ({{bbox}});\nout;"
+      '/*\nThis is an example Overpass query.\nTry it out by pressing the Import button to select a GeoJSON file containing a single polygon then pressing the Run button above!\nYou can find more examples with the Load tool.\n*/\nnode\n  [amenity=drinking_water]\n  (poly:"{{import}}");\nout;'
   },
   "Cycle Network": {
     overpass:
